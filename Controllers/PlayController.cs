@@ -15,6 +15,8 @@ namespace HeadBallCoach.Controllers
     {
         PlayRepository _playRepository = new PlayRepository();
 
+
+
         //Get All Plays
         [HttpGet]
         public IActionResult GetAllPlays()
@@ -25,29 +27,40 @@ namespace HeadBallCoach.Controllers
 
         //Add A New Play
         [HttpPost]
-        public IActionResult AddNewPlay(Play playToAdd)
+            public IActionResult AddNewPlay(Play playToAdd)
         {
             _playRepository.AddPlay(playToAdd);
             return Created("", playToAdd);
         }
 
-        /*Get Play By Type
-        [HttpGet("{typeOfPlay}/play")]
-        public IActionResult GetPlayByType(string typeOfPlay)
-        {
-            var playCalled = _playRepository.GetPlayByType(typeOfPlay);
-            return Ok(playCalled);//
-        }*/
 
-        //Get Play By Id
-        [HttpGet("{id}")]
-        public IActionResult GetPlayById(int id)
-        {
-            var play = _playRepository.GetPlayById(id);
-            if (play == null) return NotFound ("This Play is not in our Playbook.");
-            return Ok(play);
-        }
+        //[HttpGet("{typeOfPlay}/play")]
+        //public IActionResult GetPlayByType(string typeOfPlay)
+        //{
+        //    var playCalled = _playRepository.GetPlaysByType(typeOfPlay);
+        //    return Ok(playCalled);//
+        //}
 
-     }
-    
+        //    Get Play By Id
+        //    [HttpGet("{id}")]
+        //    public IActionResult GetPlayById(int id)
+        //    {
+        //        var play = _playRepository.GetPlayById(id);
+        //        if (play == null) return NotFound("This Play is not in our playbook coach.");
+        //        return Ok(play);
+        //    }
+
+
+        //    [HttpPut("{id}")]
+        //    public IActionResult UpdateAnPlay(int id, Play play)
+        //    {
+        //        var playToUpdate = _playRepository.GetAllPlays().Find(p => p.NameOfPlay == play.NameOfPlay);
+        //        var playToupdate = _playRepository.GetPlayById(id);
+
+        //        playToUpdate = play;
+        //        return Ok(playToUpdate);
+
+        //    }
+        //}
+    }
 }

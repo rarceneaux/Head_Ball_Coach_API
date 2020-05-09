@@ -2,53 +2,62 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using HeadBallCoach.Models;
+using Dapper;
 
 namespace HeadBallCoach.DataAccess
 {
     public class PlayRepository
     {
-        static List<Play> _plays = new List<Play>
+        const string ConnectionString = "Server=localhost;Database=HeadBallCoach;Trusted_Connection=True;";
+
+        public IEnumerable<Play> GetAllPlays()
         {
-            new Play
+            using (var db = new SqlConnection(ConnectionString))
             {
-                TypeOfPlay = "Run",
-                Id = 1,
-                NameOfPlay = "QB Sneak"
-            },
-             new Play
-            {
-                TypeOfPlay = "Run",
-                Id = 2,
-                NameOfPlay = "Buck Sweep"
-            },
-                new Play
-            {
-                TypeOfPlay = "Pass",
-                Id = 3,
-                NameOfPlay = "Post Corner Z"
-            },
-                new Play
-            {
-                TypeOfPlay = "Pass",
-                Id = 4,
-                NameOfPlay = "Bootleg Long"
+                return db.Query<Play>("select * from plays");
             }
-        };
-        public List<Play> GetAllPlays()
-        {
-            return _plays;
+
         }
 
-        public void AddPlay(Play play)
+        //public List<Play> GetPlaysByType(string typeOfPlay)
+        //{
+        //    var playsOfType = _plays.FindAll(p => p.TypeOfPlay.ToLower() == typeOfPlay);
+        //    return playsOfType;
+        //}
+
+        public Play AddPlay(Play play)
         {
-            play.Id = _plays.Max(x => x.Id) + 1;
-            _plays.Add(play);
+            var sql = @"insert into Plays(TypeOfPlay,NameOfPlay)
+                        output inserted.*
+                        values(@TypeOfPlay,@NameOfPlay)";
+
+            using (var db = new SqlConnection(ConnectionString))
+            {
+                var result = db.QueryFirstOrDefault<Play>(sql, play);
+                return result;
+            }
         }
 
-        public Play GetPlayById(int id)
-        {
-            return _plays.FirstOrDefault(play => play.Id == id);
-        }
+
+
+
+
+
+
+
+
+        //        public Play GetPlayById(int id)
+        //        {
+        //            return _plays.FirstOrDefault(play => play.Id == id);
+        //        }
+
+        //        public Play UpdatePlay(Play updatedPlay)
+        //        {
+        //            //update play
+        //            //add to play list
+        //            return updatedPlay;
+        //        }
     }
 }

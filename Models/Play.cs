@@ -9,6 +9,6 @@ namespace HeadBallCoach.Models
     {
         public string TypeOfPlay { get; set; }
         public int Id { get; set; }
-        public string NameOfPlay { get; set; }
+        public string Name { get; set; }
     }
 }

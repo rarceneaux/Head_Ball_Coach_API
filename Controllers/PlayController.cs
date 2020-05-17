@@ -17,7 +17,7 @@ namespace HeadBallCoach.Controllers
 
 
 
-        //Get All Plays
+        //*****Get All Plays*****
         [HttpGet]
         public IActionResult GetAllPlays()
         {
@@ -25,42 +25,61 @@ namespace HeadBallCoach.Controllers
             return Ok(allPlays);
         }
 
-        //Add A New Play
+        //*****Add A New Play******
         [HttpPost]
-            public IActionResult AddNewPlay(Play playToAdd)
+        public IActionResult AddNewPlay(Play playToAdd)
         {
-            _playRepository.AddPlay(playToAdd);
-            return Created("", playToAdd);
+            var playAdded = _playRepository.AddPlay(playToAdd);
+            return Created("", playAdded);
         }
 
 
-        //[HttpGet("{typeOfPlay}/play")]
-        //public IActionResult GetPlayByType(string typeOfPlay)
+        /***DELETE PLAY
+        //[HttpDelete("{id}")]
+        //public IActionResult DeletePlay(int id)
         //{
-        //    var playCalled = _playRepository.GetPlaysByType(typeOfPlay);
-        //    return Ok(playCalled);//
+        //    throw new NotImplementedException();
         //}
 
-        //    Get Play By Id
-        //    [HttpGet("{id}")]
-        //    public IActionResult GetPlayById(int id)
-        //    {
-        //        var play = _playRepository.GetPlayById(id);
-        //        if (play == null) return NotFound("This Play is not in our playbook coach.");
-        //        return Ok(play);
-        //    }
 
 
-        //    [HttpPut("{id}")]
-        //    public IActionResult UpdateAnPlay(int id, Play play)
-        //    {
-        //        var playToUpdate = _playRepository.GetAllPlays().Find(p => p.NameOfPlay == play.NameOfPlay);
-        //        var playToupdate = _playRepository.GetPlayById(id);
 
-        //        playToUpdate = play;
-        //        return Ok(playToUpdate);
+            //**GET PLAY BY TYPE RUN OR PASS
+        /*https://localhost:44381/api/plays/pass/play */
+        [HttpGet("{typeOfPlay}/play")]
+        public IActionResult GetPlayByType(string typeOfPlay)
+        {
+            var playCalled = _playRepository.GetPlaysByType(typeOfPlay);
+            return Ok(playCalled);//
+        }
 
-        //    }
-        //}
+
+
+        //** GET PLAY BY ID
+        /* https://localhost:44381/api/plays/# */
+        //Get Play By Id
+        [HttpGet("{id}")]
+            public IActionResult GetPlayById(int id)
+        {
+            var play = _playRepository.GetPlayById(id);
+            if (play == null) return NotFound("This Play is not in our playbook coach.");
+            return Ok(play);
+        }
+
+
+
+        //TOTALLY WRONG BUT WTH Im Learning and that is the point!!!
+        [HttpPut("{id}")]
+            public IActionResult UpdateAnPlay(int id, Play play)
+            {
+               // var playToRedo = play;
+                var playToUpdate = _playRepository.GetAllPlays().First(p => p.Id == play.Id);
+                var playToupdate = _playRepository.GetPlayById(id);
+
+            //TOTALLY WRONG BUT WTH Im Learning and that is the point!!!
+                playToUpdate = playToupdate;
+                return Ok(playToupdate);
+
+            }
+        }
     }
-}
